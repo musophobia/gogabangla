@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                        {{ tag.tag }}
+                        {{ tag.id }}
+
+                <ul>
+                {% for def in definitions %}
+                    {{ def.word.word_name }}
+                    <br>
+                    ব্যাখ্যাঃ
+                    <br>
+                <li>
+                    {{ def.define }}
+                    <br>
+                </li>
+                    একটি প্রায়োগিক দৃশ্যঃ
+                    <br>
+                 <li>
+                     {{ def.sentence_ex }}
+                 </li>
+                    <ul>
+                        ট্যাগসমূহ
+                        {% for t in def.tags.all %}
+                        <li>{{ t.tag }}</li>
+                        {% endfor %}
+                    </ul>
+                    <br>
+                    <br>
+                    <br>
+                {% endfor %}
+                 </ul>
+            </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
