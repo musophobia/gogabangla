@@ -17,10 +17,9 @@
                     <div class="card-body">
                         <h5 class="card-header">হাছন রাজার ঘরবাড়ি</h5>
                         তুমি আর নেই সে তুমি
+                        {{ UserSocialAuth.uid }}
                     </div>
-
-                    <button onclick="{ url 'logout' }"> logout </button>
-
+                    <button onclick="localhost:8000/logout" > Logout </button>
                 </div>
             </div>
         </div>

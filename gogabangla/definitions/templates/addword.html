@@ -1,15 +1,30 @@
-<!DOCTYPE html>
+{% load widget_tweaks %}
+
 <html lang="en">
 <head>
+
+    {{ form.media.css }}
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.1/css/bootstrap-theme.min.css">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <form method="post" >
 {% csrf_token %}
-{{form}}
-
-<button type="submit" class="btn btn-default"> Save </button>
+    <table>  {% for field in form.visible_fields %}
+      <tr>
+        <th>{{ field.label_tag }}</th>
+        <td>
+            {{ field }}
+            {{ field.errors }}
+            {{ field.help_text }}
+        </td>
+      </tr>
+    {% endfor %}
+    </table>
+    <button type="submit" id="submit" name="submit" class="btn btn-primary pull-right">ধোঁকাও</button>
 </form>
 </body>
+{{ form.media.js }}
 </html>

@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'definitions',
+    'django_select2',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [

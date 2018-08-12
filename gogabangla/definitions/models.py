@@ -40,12 +40,12 @@ class Word(models.Model):
 class Definition(models.Model):
     word = models.ForeignKey(Word, on_delete=models.CASCADE)
     adder = models.ForeignKey(UserSocialAuth, on_delete=models.CASCADE)
-    synonyms = models.ManyToManyField(Word, related_name='synonyms', null=True,blank=True)
+    synonyms = models.ManyToManyField(Word, related_name='synonyms', null=True, blank=True)
     antonyms = models.ManyToManyField(Word, related_name='antonyms',  null=True, blank=True)
     define = models.CharField(max_length=300)
     sentence_ex = models.CharField(max_length=1000)
     added_at = models.DateTimeField(auto_now_add=True, null=True)
-    updated_at = models.DateTimeField
+    updated_at = models.DateTimeField(null=True, blank=True)
     tags = models.ManyToManyField(Tag, null=True, blank=True)
     like_count = models.IntegerField(default=0)
     dislike_count = models.IntegerField(default=0)

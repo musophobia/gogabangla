@@ -23,6 +23,8 @@ from definitions import views as core_views
 urlpatterns = [
     url(r'^$', core_views.home, name='home'),
     path('admin/', admin.site.urls),
+    url(r'^select2/', include('django_select2.urls')),
+    url(r'^oauth/', include('social_django.urls', namespace='social')),
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),
     path('words/<str:word>',core_views.show_word, name='show_word'),
@@ -32,7 +34,6 @@ urlpatterns = [
     path('add',core_views.add_word, name='add_word'),
     #path('remove',core_views.remove_def, name='remove_def'),
     #path('goga_guy/<id>',core_views.goga_guy, name='goga_guy'),
-    url(r'^oauth/', include('social_django.urls', namespace='social')),
 
     #    url(r'^settings/password/$', core_views.password, name='password'),
 ]

@@ -1,33 +1,30 @@
-from datetime import timezone
-
+from datetime import timezone, datetime
 from django.contrib.auth.views import logout
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Definition, Word, Tag
 from .forms import DefinitionForm
+from social_django.models import UserSocialAuth
 # Create your views here.
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-def add_word(request):
 
+
+def add_word(request):
     if request.method == "POST":
         form = DefinitionForm(request.POST)
         if form.is_valid():
-            word=form.cleaned_data['word']
-            wo=Word.objects.get(word_name=word)
-            if (wo is None):
-                Word.objects.create(adder_id=request.user ,word_name=wo, added_at=timezone.now())
-            model_instance = form.save(commit=False)
-            model_instance.timestamp = timezone.now()
+            model_instance=form.save(commit=False)
+            model_instance.word=Word.objects.get(word_name=form.cleaned_data['word'])
+            y = UserSocialAuth.objects.get(pk=2)
+            model_instance.adder=y
             model_instance.save()
-            return render(request, "home.html")
-
-
+            form=DefinitionForm()
+       # print(form.cleaned_data)
     else:
-
         form = DefinitionForm()
+    return render(request, "addword.html", {'form': form})
 
-        return render(request, "addword.html", {'form': form})
 
 def home(request):
     return render(request, 'home.html')
@@ -71,3 +68,7 @@ def show_tag(request, tag_name):
     }
     ##way 2###return HttpResponse(template.render(context, request))
     return render(request, 'show_tag.html', context)
+
+def logout_view(request):
+    logout(request)
+    return render(request, 'login.html')
