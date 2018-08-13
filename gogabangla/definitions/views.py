@@ -19,6 +19,7 @@ def add_word(request):
             y = UserSocialAuth.objects.get(pk=2)
             model_instance.adder=y
             model_instance.save()
+            form.save_m2m()
             form=DefinitionForm()
        # print(form.cleaned_data)
     else:
