@@ -38,6 +38,15 @@ class DefinitionForm(forms.ModelForm):
             wo = Word.objects.get(word_name=w)
         return wo
 
+    def clean_sentence_ex(self):
+        word = self.cleaned_data['word']
+        w=word.word_name
+        s=self.cleaned_data['sentence_ex']
+        print(s)
+        if w not in s:
+            raise forms.ValidationError("udahorone shobdo din")
+        return s
+
     # def clean_tags(self):
     #     w=self.cleaned_data['tags']
     #     print(w)
