@@ -1,5 +1,5 @@
 from django.core.exceptions import NON_FIELD_ERRORS
-from django.forms import ModelForm, Textarea, ModelMultipleChoiceField, ModelChoiceField
+from django.forms import ModelForm, Textarea, ModelMultipleChoiceField, ModelChoiceField, TextInput
 from django import forms
 from django.utils.encoding import force_text
 from django_select2.forms import Select2MultipleWidget, Select2TagWidget, ModelSelect2TagWidget
@@ -31,20 +31,12 @@ class MyModelSelect2TagWidget(ModelSelect2TagWidget):
                 val = queryset.create(tag=val).pk
                 #Tag.objects.create(tag=val)
             cleaned_values.append(val)
-        # for val in values:
-        #     if str(val) not in pks:
-        #         val = queryset.create(tag=val).pk
-        #         t=Tag.objects.get_or_create(tag=val)
-        #         p=t.pk
-        #         print(t)
-        #         cleaned_values.append(p)
-        #     else:
-        #         cleaned_values.append(val)
         return cleaned_values
 
 
 class DefinitionForm(forms.ModelForm):
-    word=forms.CharField(required=True, label='Word', max_length=100)
+    word=forms.CharField(required=True, label='Word', max_length=100, widget=
+                        TextInput(attrs={'id':'words', 'class':'form-group','style': 'min-width:700',}))
     define=forms.CharField(required=True, label='define',
                            widget=Textarea(attrs={'placeholder':'write bitch', 'rows':'2','cols':'100',
                                                   'id':'def', 'class':'form-group'}),
@@ -53,7 +45,7 @@ class DefinitionForm(forms.ModelForm):
                                                   'rows':'4','cols':'100',
                                                   'id':'ex', 'class':'form-group'}), max_length=1000)
     tags = ModelMultipleChoiceField(queryset=Tag.objects.all(), label='Tags', widget=
-    MyModelSelect2TagWidget)
+    MyModelSelect2TagWidget(attrs={'style': 'min-width:700'}))
     synonyms= ModelMultipleChoiceField(required=False, queryset=Word.objects.all(), label='Synonyms', widget=
     Select2MultipleWidget(attrs={'data-placeholder': 'Please choose synonyms', 'id':'syn'}))
     antonyms = ModelMultipleChoiceField(required=False, queryset=Word.objects.all(), label='বিপরীত শব্দ', widget=
