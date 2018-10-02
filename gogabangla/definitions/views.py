@@ -50,3 +50,18 @@ def show_tag(request, tag_name):
     }
     ##way 2###return HttpResponse(template.render(context, request))
     return render(request, 'show_tag.html', context)
+
+def lettersearch(request, let):
+    #print(word.word_name)
+    words = Word.objects.filter(word_name__contains=let)
+
+    context = {
+        'words': words,
+    }
+    ##way 2###return HttpResponse(template.render(context, request))
+    return render(request, 'letter_search.html', context)
+
+def add(request):
+    if request.method=='POST' or None:
+        print("sfgdfhg")
+    return render(request, 'add_word.html')

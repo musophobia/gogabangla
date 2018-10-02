@@ -1,4 +1,6 @@
 from django.db import models
+from django.forms import ModelForm
+
 
 # Create your models here.
 from social_django.models import UserSocialAuth
@@ -63,3 +65,8 @@ class Like(models.Model):
 class Dislike(models.Model):
     definition = models.ForeignKey(Definition, on_delete=models.CASCADE)
     dliker = models.ForeignKey(UserSocialAuth, on_delete=models.CASCADE)
+
+class DefineForm(ModelForm):
+    class Meta:
+        model = Definition
+        fields = ['word', 'define','sentence_ex','tags','synonyms','antonyms', 'image']
