@@ -29,12 +29,14 @@ urlpatterns = [
     path('words/word_by_id=<int:num>',core_views.show_id_word, name='show_id_word'),
     path('tags/<str:tag_name>',core_views.show_tag, name='show_tag'),
     path('letters/<str:let>',core_views.lettersearch, name='show_letter'),
-    path('add/',core_views.add, name='adder'),
+    path('add/',core_views.add_word, name='adder'),
     #path('letters/<str:letter>',core_views.show_letter, name='show_letter'),
     #path('add',core_views.add_word, name='add_word'),
     #path('remove',core_views.remove_def, name='remove_def'),
     #path('goga_guy/<id>',core_views.goga_guy, name='goga_guy'),
     url(r'^oauth/', include('social_django.urls', namespace='social')),
+    url(r'^select2/', include('django_select2.urls')),
+
 
     #    url(r'^settings/password/$', core_views.password, name='password'),
 ]

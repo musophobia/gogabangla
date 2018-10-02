@@ -1,13 +1,17 @@
 from django.contrib.auth.views import logout
 from django.http import HttpResponseRedirect
+from django.contrib.auth.forms import AdminPasswordChangeForm, PasswordChangeForm
+from social_django.models import UserSocialAuth
 from django.shortcuts import render, get_object_or_404
+
+from .forms import DefinitionForm
 from .models import Definition, Word, Tag
 
 # Create your views here.
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
-
+@login_required
 def home(request):
     return render(request, 'home.html')
 
@@ -61,7 +65,18 @@ def lettersearch(request, let):
     ##way 2###return HttpResponse(template.render(context, request))
     return render(request, 'letter_search.html', context)
 
-def add(request):
-    if request.method=='POST' or None:
-        print("sfgdfhg")
-    return render(request, 'add_word.html')
+def add_word(request):
+    if request.method == "POST":
+        form = DefinitionForm(request.POST)
+        if form.is_valid():
+            model_instance=form.save(commit=False)
+            model_instance.word=Word.objects.get(word_name=form.cleaned_data['word'])
+            y = UserSocialAuth.objects.get(pk=2)
+            model_instance.adder=y
+            model_instance.save()
+            form.save_m2m()
+            form=DefinitionForm()
+       # print(form.cleaned_data)
+    else:
+        form = DefinitionForm()
+    return render(request, "addword.html", {'form': form})

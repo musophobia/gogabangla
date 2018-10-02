@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'definitions',
+    'django_select2',
 ]
 
 MIDDLEWARE = [
@@ -146,9 +147,9 @@ SOCIAL_AUTH_FACEBOOK_SECRET = '38b97c93d973d4a8420088e342fe3692'  # App Secret
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '913143340331-6rm337si40fu1qcoaqs1t872e3dnv45q.apps.googleusercontent.com'  # Paste CLient Key
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'XBMdoPTwWanQcple2kSw7kWz'  # Paste Secret Key
 
-# SOCIAL_AUTH_LOGIN_ERROR_URL = '/settings/'
-# SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/settings/'
-# SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/settings/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/settings/'
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'

@@ -1,63 +1,43 @@
-<!DOCTYPE html>
+{% load staticfiles %}
 <html lang="en">
 <head>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js'></script>
     <meta charset="UTF-8">
+    {{ form.media.css }}
+
     <title>Title</title>
 </head>
 <body>
-
- <form method="post" class="horizontal" enctype="multipart/form-data">
-     {% csrf_token %}
-                    <br style="clear:both">
-                    <h3 style="margin-bottom: 25px; text-align: center;">শব্দ করি যোগ </h3>
-                   {% include 'forms.html' %}
-
-                    <button type="submit" id="submit" name="submit" class="btn btn-primary pull-right">ধোঁকাও</button>
-                </form>
-                <script>
-                    $(document).ready(function(){
-                        $('#tags').select2({
-                            placeholder : 'কই পাইসেন বলেন',
-                            tags: true
-
-                    });
-                    });
-                </script>
-                <script>
-                    $(document).ready(function(){
-                        $('#syns').select2({
-                            placeholder : 'প্রতিশব্দ জানলে বলেন নাকি উলটাপালটা শব্দ দিয়া দিসেন কে জানে'
-
-                        });
-                    });
-                </script>
-                <script>
-                    $(document).ready(function(){
-                        $('#ants').select2({
-                            placeholder : 'বিপরীত শব্দ জানলে লেখেন'
-                        });
-                    });
-                </script>
-                    <script>
-                        function validateForm(){
-                            var namecheck = document.getElementById('name').value;
-                            alert("বাংলায় লেখ শালা "+namecheck);
-                            for (var i = 0; i < namecheck.length; i++) {
-                                var code = namecheck.charCodeAt(i);
-                                console.log(code+" ");
-                            //    if (code>65 && code<70) {
-                                if (!(code < 0x0980 || code > 0x09FF)) {
-                                    alert("বাংলায় লেখ শালা");
-                                    break;
-                                }
-                            }
-                            var excheck = document.getElementById('sentence_ex').value;
-                           // if (!(excheck.contains(namecheck))) {
-                            //    alert("কি বালের উদাহরণ দেস বক্সদ!!!");
-                            //}
-                            //  var postalResult = postalRGEX.test(postalCode);
-                            //  alert("phone:"+nameResult + ", postal code: "+postalResult);
-                        }
-                    </script>
+<form method="post" >
+{% csrf_token %}
+      {% for field in form %}
+      <tr>
+        <th>{{ field.label_tag }}</th> <br>
+        <td>
+            {{ field }}
+            {{ field.errors }}
+            {{ field.help_text }}
+        </td>
+          <br>
+      </tr>
+    {% endfor %}
+<br>
+    <button type="submit" id="submit" name="submit" class="btn btn-primary pull-right">ধোঁকাও</button>
+</form>
 </body>
+{{ form.media.js }}
+<script>
+    $(document).ready(function() {
+    $("#ant").select2({ width: 700 });
+});
+     $(document).ready(function() {
+    $("#syn").select2({ width: 700 });
+});
+     $(document).ready(function() {
+    $("#words").setAttribute({ width: 700 });
+});
+</script>
 </html>
