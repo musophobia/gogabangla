@@ -1,0 +1,12 @@
+{% extends "homeBootStrap4.html" %}
+{% load static %}
+{% block content %}
+    <div class="container mx-auto p-4  fluid">
+        {{ user.username }}
+        <form method="post">
+            {% csrf_token %}
+            {{ UserNameForm }}
+             <button formaction="{% url 'username_set' %}"  class="btn btn-info  justified-content-center" type="submit">Submit</button>
+        </form>
+    </div>
+{% endblock %}

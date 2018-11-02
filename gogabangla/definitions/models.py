@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.forms import ModelForm
-
 
 # Create your models here.
 from social_django.models import UserSocialAuth
@@ -66,13 +66,12 @@ class Definition(models.Model):
         return self.like_count
 
 
-
 class Like(models.Model):
     definition = models.ForeignKey(Definition, on_delete=models.CASCADE)
     liker = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.liker.username+" "+self.definition.define)
+        return str(self.liker.username + " " + self.definition.define)
 
 
 class Dislike(models.Model):
@@ -80,11 +79,21 @@ class Dislike(models.Model):
     dliker = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.dliker.username+" "+self.definition.define)
-
-class DefineForm(ModelForm):
-    class Meta:
-        model = Definition
-        fields = ['word', 'define','sentence_ex','tags','synonyms','antonyms', 'image']
+        return str(self.dliker.username + " " + self.definition.define)
 
 
+# def validate_even(value):
+#     if value != 'banglabakademy':
+#         raise ValidationError("You have forgotten about Fred!")
+#
+#     def clean_emergcon1(self):
+#         """ Validation of emergcon1 specifically """
+#         emergcon1 = self.cleaned_data['emergcon1']
+#         if emergcon1[:1] not in ['0', '+']:
+#             raise ValidationError(
+#                 _('%(emergcon1)s is not a valid phone number'),
+#                 params={'emergcon1': emergcon1},
+#             )
+#         # Always return a value to use as the new cleaned data, even if
+#         # this method didn't change it.
+#         return emergcon1

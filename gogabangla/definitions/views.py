@@ -4,9 +4,9 @@ from django.core.serializers import json
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.forms import AdminPasswordChangeForm, PasswordChangeForm
 from social_django.models import UserSocialAuth
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from notifications.signals import notify
-from .forms import DefinitionForm, SearchForm
+from .forms import DefinitionForm, SearchForm, UserNameForm
 from .models import Definition, Word, Tag, Like, Dislike
 
 # Create your views here.
@@ -16,7 +16,7 @@ from django.shortcuts import render
 @login_required
 def home(request):
     searchform = SearchForm()
-    return render(request, 'letter_wordShow.html', {'searchform':searchform})
+    return render(request, 'homeBootStrap4.html', {'searchform':searchform})
 
 
 def show_word(request, word):
@@ -109,7 +109,7 @@ def show_tag(request, tag_name):
     tag = get_object_or_404(Tag, tag=tag_name)
     #word = get_object_or_404(Word, pk=nu)
     #print(word.word_name)
-    definition = Definition.objects.filter(tags__tag=tag_name).distinct()
+    definition = Definition.objects.filter(tags__tag=tag_name)
 
     context = {
         'tag': tag,
@@ -157,18 +157,20 @@ def add_word(request):
     return render(request, "addword.html", {'form': form, 'searchform':searchform})
 
 def auto_complete(request):
-    if request.is_ajax():
-        #print('owh')
-        q = request.GET.get('term', '')
-        search_qs = Word.objects.filter(name__startswith='ম')
-        results = []
-        for r in search_qs:
-            results.append(r.FIELD)
-        data = json.dumps(results)
-    else:
-        data = 'fail'
-    mimetype = 'application/json'
-    return HttpResponse(data, mimetype)
+    if request.method=="POST":
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            search_word = form.cleaned_data['word_name']
+            print(search_word)
+            wo = Word.objects.filter(word_name__icontains=search_word)
+            print(wo)
+            searchform = SearchForm()
+            context = {
+                'word': wo,
+                'searchform': searchform
+            }
+            return render(request, 'search_page.html', context)
+    return render(request, 'search_page.html')
 
 def search_page(request):
     if request.method == "POST":
@@ -190,9 +192,25 @@ def search_page(request):
 
 def profile(request, name):
     user=get_object_or_404(User, username=name)
-    defins = Definition.objects.filter(adder_id=user)
-    def_count =  Definition.objects.filter(adder_id=user).count
-    word_count= Word.objects.filter(adder=user).count
-
+    print(user)
+    defins = Definition.objects.filter(adder_id__pk=user.id)
+    print(defins)
+    def_count =  Definition.objects.filter(adder_id__pk=user.id).count
+    word_count= Word.objects.filter(adder__pk=user.id).count
+    print(word_count)
     searchform = SearchForm()
     return render(request, 'profile_page.html', {'defon':defins,'user':user, 'dc':def_count, 'wc':word_count, 'searchform': searchform})
+
+
+@login_required
+def username_set(request):
+    form=UserNameForm()
+    if request.method=="POST":
+        form=UserNameForm(request.POST)
+        if form.is_valid():
+            user=get_object_or_404(User, pk=request.user.id)
+            usename=form.cleaned_data['word_name']
+            user.username=usename
+            user.save()
+            return redirect('/')
+    return render(request,'username_set.html', {'UserNameForm':form})

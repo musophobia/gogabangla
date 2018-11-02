@@ -1,0 +1,22 @@
+{% extends "homeBootStrap4.html" %}
+{% load static %}
+{% block content %}
+
+
+    <div class="container">
+                <ul>
+                    {% if word is not None %}
+                {% for w in word %}
+                   <div class="card mb-3  shadow rounded">
+                        <div class="card-body bg-secondary rounded text-center text-white">
+                           <a class="text-white" href="{% url 'show_word' w.word_name %}">
+                               <h5> {{ w.word_name }} </h5> </a>
+                        </div>
+                 </div>
+                {% endfor %}
+                    {% else %}
+                    kono word nai shala
+                    {% endif %}
+                 </ul>
+            </div>
+{% endblock %}

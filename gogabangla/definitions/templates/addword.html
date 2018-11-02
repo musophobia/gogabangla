@@ -1,13 +1,8 @@
 {% extends 'homeBootStrap4.html' %}
 {% load staticfiles %}
 {% block content %}
-<html lang="en">
-<head>
-    {{ form.media.css }}
 
-    <title>Title</title>
-</head>
-<body>
+
  <div class="container">
         <h3>নতুন শব্দ যোগ করুন</h3>
         <hr/>
@@ -25,13 +20,13 @@
       </tr>
     {% endfor %}
 <br>
-      <button type="submit" id="submit" name="submit" class="btn btn-block btn-success  text-white rounded">জোরে ঢুকা শালা</button>
+      <button type="submit" id="submit" name="submit" class="btn btn-block btn-success  text-white rounded">শব্দটি যোগ করুন</button>
 </form>
  </div>
-</body>
-{{ form.media.js }}
+
+
 <script>
 
 </script>
-</html>
+
 {% endblock %}

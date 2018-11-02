@@ -41,6 +41,7 @@ urlpatterns = [
     url('search/', core_views.auto_complete, name='search'),
     url('search_page/', core_views.search_page, name='search_page'),
     url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
+    url('username_set/', core_views.username_set, name='username_set'),
 
     #    url(r'^settings/password/$', core_views.password, name='password'),
 ]
