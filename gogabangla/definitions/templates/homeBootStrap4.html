@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
 
-    {{ form.media.css }}
+
     <meta charset="UTF-8">
     <title>গোগাবাংলা</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
+    {{ form.media.css }}
     <link rel="stylesheet" href="{% static 'home4.css' %}">
     <link rel="stylesheet" href="{% static 'buttons.css' %}">
     <!-- Latest compiled and minified CSS -->
@@ -27,15 +27,15 @@
 
     {{ form.media.js }}
 </head>
-<body class="">
+<body class="" style="padding-top:120px;">
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
 
     <!--brand-->
-    <!--<a class="navbar-brand" href="{% url 'home' %}">বাংলা বাকাডেমি</a>-->
-    <a class="navbar-brand" href="{% url 'home' %}">
-        <img src="{% static 'bakademia.png' %}" alt="বাংলা বাকাডেমি" style="">
-    </a>
+    <a class="navbar-brand" href="{% url 'home' %}">বাংলা বাকাডেমি</a>
+    <!--<a class="navbar-brand" href="{% url 'home' %}">-->
+        <!--<img src="{% static 'bakademia.png' %}" alt="বাংলা বাকাডেমি" style="width:200px;">-->
+    <!--</a>-->
 
     <!--toggler-->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -65,7 +65,7 @@
                                 {{ searchform }}
 
                         <div class="input-group-append">
-                            <button formaction="{% url 'search' %}"  class="btn btn-default" type="submit">
+                            <button formaction="{% url 'search' %}"  class="btn btn-info text-white mt-3" type="submit">
                                 খোঁজ করুন
                             </button>
                         </div>
@@ -202,10 +202,9 @@
                     </div>
 
                     <div id="collapseTwo" class="collapse show" data-parent="#accordion">
-                        <div class="card-body">
+                        <div class="card-body text-center ">
                             <p>
-                                আমরা বোক্সোদ না। এইটাতেও একদিন শব্দে শব্দে ভরে দিবো।
-                                আমরা বোক্সোদ না। এইটাতেও একদিন শব্দে শব্দে ভরে দিবো।
+                                <a style="font-size:24px!important" href="{% url 'show_word' today_word.word_name %}"> {{ today_word }} </a>
                             </p>
                         </div>
                     </div>

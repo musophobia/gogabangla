@@ -75,7 +75,7 @@ def show_word(request, word):
         else:
             return HttpResponse(10)
     word = Word.objects.get(word_name=word)
-    definition = Definition.objects.filter(word=word)
+    definition = Definition.objects.filter(word=word).order_by('-like_count')
     searchform = SearchForm()
     context = {
         'word': word,
@@ -84,8 +84,6 @@ def show_word(request, word):
     }
 
     ##way 2###return HttpResponse(template.render(context, request))
-
-
     return render(request, 'show_word.html', context)
     #return HttpResponse(json.dumps(context), content_type='application/json')
 
@@ -109,23 +107,27 @@ def show_tag(request, tag_name):
     tag = get_object_or_404(Tag, tag=tag_name)
     #word = get_object_or_404(Word, pk=nu)
     #print(word.word_name)
-    definition = Definition.objects.filter(tags__tag=tag_name)
-
+    definition = Definition.objects.filter(tags__tag=tag_name).order_by('-added_at')
+    searchform=SearchForm()
     context = {
         'tag': tag,
         'definitions': definition,
+        'searchform':searchform,
     }
     ##way 2###return HttpResponse(template.render(context, request))
     return render(request, 'show_tag.html', context)
 
 def lettersearch(request, let):
     #print(word.word_name)
-    words = Word.objects.filter(word_name__contains=let)
+    words = Word.objects.filter(word_name__contains=let).order_by('-added_at')
     fh=Word.objects.filter(word_name__contains=let).count()
+    searchform=SearchForm()
     context = {
         'word':words,
         'ew':fh,
-        'ter':let
+        'ter':let,
+        'searchform':searchform,
+
     }
     ##way 2###return HttpResponse(template.render(context, request))
     return render(request, 'letter_search.html', context)
@@ -177,7 +179,7 @@ def search_page(request):
         form = SearchForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['word_name']
-            word = Word.objects.get(word_name=name)
+            word = Word.objects.get(word_name=name).order_by('-like_count')
             definition = Definition.objects.filter(word=word)
             searchform = SearchForm()
             context = {
@@ -193,7 +195,7 @@ def search_page(request):
 def profile(request, name):
     user=get_object_or_404(User, username=name)
     print(user)
-    defins = Definition.objects.filter(adder_id__pk=user.id)
+    defins = Definition.objects.filter(adder_id__pk=user.id).order_by('-added_at')
     print(defins)
     def_count =  Definition.objects.filter(adder_id__pk=user.id).count
     word_count= Word.objects.filter(adder__pk=user.id).count

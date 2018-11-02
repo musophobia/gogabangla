@@ -11,33 +11,101 @@
         <div class="card-body">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-8">
-                        <h6>Shobod add korechen</h6>
-                        <p>date</p>
+                    <div class="col-md-7">
+                        <h6>শব্দটি যোগ করেছেন <a style="font-size:18px;!important" href="{% url 'profile' word.adder.username %}">{{word.adder }}</a></h6>
+                        <p>তারিখঃ {{word.added_at}}</p>
                     </div>
+                    <div class="col-md-3 m-1">
+                        <a href="#"  data-toggle="modal" data-target="#synonymModal" class="" id="synonym">সমার্থক শব্দ</a>
+                        <a href="#"  data-toggle="modal" data-target="#antonymModal" class="text-warning" id="antonym">বিপরীত শব্দ</a>
 
+                        <!-- The  Synonym Modal -->
+                          <div class="modal fade" id="synonymModal">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+
+                                <!-- Modal Header -->
+                                <div class="modal-header">
+                                  <h4 class="modal-title">সমার্থক শব্দ</h4>
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+
+                                <!-- Modal body -->
+                                <div class="modal-body">
+                                    {% for def in definitions %}
+                                        {% if def.synonyms is not None %}
+                                             {% for syn in def.synonyms.all %}
+                                                <a href="{% url 'show_word' syn.word_name %}">{{ syn }}</a>
+                                            {% endfor %}
+                                        {% else %}
+                                            <p> কোনো সমার্থক শব্দ পাওয়া যায়নি</p>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+
+                                <!-- Modal footer -->
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+
+                        <!-- The Modal -->
+                          <div class="modal fade" id="antonymModal">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+
+                                <!-- Modal Header -->
+                                <div class="modal-header">
+                                  <h4 class="modal-title">বিপরীত শব্দ</h4>
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+
+                                <!-- Modal body -->
+                                <div class="modal-body">
+                                   {% for def in definitions %}
+                                        {% if def.antonyms is not None %}
+                                             {% for ant in def.antonyms.all %}
+                                                <a href="{% url 'show_word' ant.word_name %}">{{ ant }}</a>
+                                            {% endfor %}
+                                        {% else %}
+                                            <p> কোনো বিপরীত শব্দ পাওয়া যায়নি</p>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+
+                                <!-- Modal footer -->
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+
+                    </div>
                     <div class="col-md-1 m-1 ">
                         <button type="button" name="adddefbutton" class="btn btn-lg btn-info"
                                 data-toggle="tooltip" data-placement="top" title="এই শব্দটির নতুন ব্যাখ্যা দিন">
                             <span class="fa fa-plus"></span></button>
                     </div>
-                    <div class="col-md-2 m-1">
-                        <select 0class="dropdown" id="sort">
-                                <option value="Select">Select Your Sex</option>
-                                 <option value="M" id="Male">Male</option>
-                                <option value="F" id="Female">Female</option>
 
-                        </select>
-
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h6 class="">শেয়ার করুনঃ</h6>
+                        <div class="tags">
+                            <a class="social-link btn-facebook p-1 mr-4" href="http://www.facebook.com/sharer.php?u={% url 'show_word' word.word_name %}" id="fb-share"
+                               rel="nofollow" target="_blank" title="Share on Facebook" ><i class="fa fa-facebook"></i> ফেসবুক</a>
+                            <a class="social-link gplus p-1" id="gplus-share" href="https://plus.google.com/share?url={% url 'show_word' word.word_name %}" title="share it">
+                                <i class="fa fa-google-plus"></i>গুগল প্লাস</a>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="tags">
-             <a class="social-link facebook" href="http://www.facebook.com/sharer.php?u={{ request.get_full_path }}" id="fb-share"
-               rel="nofollow" target="_blank" title="Share on Facebook" ><i class="fa fa-facebook"></i> ফেসবুক</a>
-            <a class="social-link gplus" id="gplus-share" href="https://plus.google.com/share?url={{ request.get_full_path }}" title="share it">
-                <i class="fa fa-google-plus"></i>গুগল প্লাস</a>
-        </div>
+
     </div>
 
     </div>

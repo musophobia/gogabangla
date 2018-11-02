@@ -143,7 +143,7 @@ class DefinitionForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     word_name=forms.CharField(required=True, label="", max_length=100, widget=
-                        TextInput(attrs={'id':'words', 'class':'form-group form-control rounded','placeholder':"এখানে শব্দটি লিখুন..."}))
+                        TextInput(attrs={'id':'words', 'class':'form-inline form-control mt-3','placeholder':"এখানে শব্দটি লিখুন..."}))
 
 
 
