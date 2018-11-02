@@ -1,0 +1,101 @@
+{% extends "homeBootStrap4.html" %}
+{% load static %}
+{% block content %}
+    <div class="container" >
+        <div class="row">
+            <div class="col-md-12 p-3">
+                <div class="card">
+                    <img class="card-img-top  rounded-circle mx-auto d-block img-fluid" src="pm.png" alt="ছবি"
+                    height="200" width="200">
+                    <div class="card-body mt-3">
+                        <h4 class="card-title"> {{ user.username }} </h4>
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#about">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#wordMenu">Words&Def</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#menu2">জাদু</a>
+                            </li>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div id="about" class="container tab-pane active shadow"><br>
+                                <h3>About</h3>
+                                <div class="row border">
+                                    <div class="col-md-6">
+                                        <h6>Name</h6>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{ user.first_name }} {{ user.last_name }}</p>
+                                    </div>
+                                    <hr>
+                                </div>
+                                <div class="row border">
+                                    <div class="col-md-6">
+                                        <h6>User Name</h6>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{ user.username }}</p>
+                                    </div>
+                                    <hr>
+                                </div>
+                                <div class="row border">
+                                    <div class="col-md-6">
+                                        <h6>Mail</h6>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="text-primary">{{ user.email }}</p>
+                                    </div>
+                                    <hr>
+                                </div>
+                                <div class="row border">
+                                    <div class="col-md-6">
+                                        <h6>Total Word Added</h6>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{ wc }}</p>
+                                    </div>
+                                    <hr>
+                                </div>
+                                <div class="row border">
+                                    <div class="col-md-6">
+                                        <h6>Total Definitions Added</h6>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{ dc }} </p>
+                                    </div>
+                                    <hr>
+                                </div>
+
+                            </div>
+
+
+                            <div id="wordMenu" class="container tab-pane fade"><br>
+                                <h3>শব্দ ও ব্যাখ্যা</h3>
+                                {% for def in defon %}
+                                    <div class="card shadow rounded">
+                                        <div class="card-header bg-secondary text-white ">
+                                           <a class="text-white" href="{% url 'show_word' def.word.word_name %}">
+                                                <h5> {{ def.word.word_name }} </h5> </a>
+                                        </div>
+                                    <div class="card-body">
+                                <span>ব্যাখ্যাঃ {{ def.define }}</span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div id="menu2" class="container tab-pane fade"><br>
+                                <h3>Menu 2</h3>
+                                <p>মাদারি এইখানে কি করতে ঢুকসিস</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

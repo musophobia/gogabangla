@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'social_django',
     'definitions',
     'django_select2',
+    'notifications',
 ]
 
 MIDDLEWARE = [
@@ -73,7 +74,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'gogabangla.wsgi.application'
-
+DJANGO_NOTIFICATIONS_CONFIG = { 'SOFT_DELETE': True}
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 

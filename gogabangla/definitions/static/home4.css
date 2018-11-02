@@ -1,0 +1,47 @@
+@media screen and (min-width: 768px) {
+    .nav-item {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+    .form-inline {
+        min-width: 200px;
+    }
+
+    .border {
+        padding: 20px !important;
+    }
+
+    #cardContainer {
+        position: sticky;
+    }
+}
+
+body {
+    position: relative;
+    min-height: 100vh;
+    margin: 0;
+    padding-top: 90px;
+    padding-bottom: 40px;
+}
+
+footer {
+    position: absolute;
+    color: white;
+    width: 100%;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 14px;
+    padding: 10px;
+    bottom: 0;
+}
+
+.bg-1{
+    background-color:#1abc9c;
+    color:#ffffff;
+}
+
+.ulclass {
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}

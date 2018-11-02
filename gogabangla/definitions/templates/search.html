@@ -1,0 +1,25 @@
+{% extends "homeBootStrap4.html" %}
+{% block content %}
+<html lang="en">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" media="all" /> <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"> </script> <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post" class="bg-light shadow-lg rounded p-4 mb-4">
+{% csrf_token %}
+      {% for field in form %}
+      <tr>
+        <th>{{ field.label_tag }}</th> <br>
+        <td>
+            {{ field }}
+        </td>
+          <br>
+      </tr>
+    {% endfor %}
+ <button type="submit"  id="submit" name="submit" class="btn btn-block btn-success  text-white rounded"> asho khuji </button>
+</form>
+</body>
+</html>
+{% endblock %}

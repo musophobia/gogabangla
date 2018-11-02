@@ -1,41 +1,157 @@
-<!DOCTYPE html>
+{% extends "homeBootStrap4.html" %}
+{% block content %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{{request.user}} LOL</title>
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                        {{ word.word_name }}
-                        {{ word.id }}
 
-                <ul>
-                {% for def in definitions %}
-                    ব্যাখ্যাঃ
-                    <br>
-                <li>
-                    {{ def.define }}
-                    <br>
-                </li>
-                    একটি প্রায়োগিক দৃশ্যঃ
-                    <br>
-                 <li>
-                     {{ def.sentence_ex }}
-                 </li>
-                    <ul>
-                        ট্যাগসমূহ
-                        {% for t in def.tags.all %}
-                        <li>{{ t.tag }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endfor %}
-                 </ul>
+    <div class="card shadow mb-3">
+        <div class="card-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h6>Shobod add korechen</h6>
+                        <p>date</p>
+                    </div>
+
+                    <div class="col-md-1 m-1 ">
+                        <button type="button" name="adddefbutton" class="btn btn-lg btn-info"
+                                data-toggle="tooltip" data-placement="top" title="এই শব্দটির নতুন ব্যাখ্যা দিন">
+                            <span class="fa fa-plus"></span></button>
+                    </div>
+                    <div class="col-md-2 m-1">
+                        <select class="dropdown" id="sort">
+                                <option value="Select">Select Your Sex</option>
+                                 <option value="M" id="Male">Male</option>
+                                <option value="F" id="Female">Female</option>
+
+                        </select>
+
+                    </div>
+                </div>
             </div>
-            </div>
+            <div class="tags">
+             <a class="social-link facebook" href="http://www.facebook.com/sharer.php?u={{ request.get_full_path }}" id="fb-share"
+               rel="nofollow" target="_blank" title="Share on Facebook" ><i class="fa fa-facebook"></i> ফেসবুক</a>
+            <a class="social-link gplus" id="gplus-share" href="https://plus.google.com/share?url={{ request.get_full_path }}" title="share it">
+                <i class="fa fa-google-plus"></i>গুগল প্লাস</a>
         </div>
     </div>
 
+    </div>
+    {% for def in definitions %}
+    <div class="jumbotron bg-white shadow-lg  mb-3 text-center" style="">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="text-primary"> {{ word.word_name }}</h3>
+                    <h5 class="text-success"> ব্যাখ্যাঃ {{ def.define }} </h5>
+                    <h6 class="mb-3">একটি প্রায়োগিক দৃশ্যঃ {{ def.sentence_ex }} </h6>
+                    <ul class="list-inline mb-4">
+                        <span style="font-size: 14px!important;" class="text-danger"> #ট্যাগসমূহ </span>
+                        {% for t in def.tags.all %}
+                           <a href ="{% url 'show_tag' t.tag %}" style="font-size: 12px!important;" class="list-inline-item bg-info text-white text-center px-3 py-1 rounded-circle">{{ t.tag }}</a>
+                        {% endfor %}
+                    </ul>
+
+                    <!-- ajax will be applied upon this buttons-->
+
+
+
+                    <button type="submit"  id="like"  name="{{ def.id }}" value="likebutton" class="btn btn-social btn-outline-success likebutton">
+	                    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                        <i id="like_{{ def.id }}">
+                             {{ def.like_count }}
+                        </i>
+                    </button>
+                    <button type="submit" id="dislike" name="{{ def.id }}" value="dislikebutton" class="btn btn-social btn-outline-danger dislikebutton">
+                        <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+                        <i id="dislike_{{ def.id }}">{{ def.dislike_count }}</i>
+                    </button>
+                     </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+<!-- here will be a for loop for tags-->
+
+<script>
+$('.likebutton').click(function(){
+      $.ajax({
+               type: "POST",
+               url: "{% url 'show_word' word.word_name %}",
+               data: {'slug': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}', 'variable':'likebutton'},
+
+               success: function(data) {
+
+                     var id = $(this).attr('id');
+                     var data1=data.split(',')
+                     $("#like_"+data1[2]).html(data1[0]);
+                     $("#dislike_"+ data1[2]).html(data1[1]);
+
+                     //alert("Data: " + data );
+                },
+                error: function(rs, e) {
+                       alert("দুইদিনের দুনিয়া। লাইক দিয়া কি হবে");
+
+                }
+          });
+
+    })
+
+</script>
+<script>
+    $('.dislikebutton').click(function(){
+      $.ajax({
+               type: "POST",
+               url: "{% url 'show_word' word.word_name %}",
+               data: {'slug': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}',  'variable':'dislikebutton'},
+
+               success: function(data) {
+                     var data1=data.split(',')
+
+                     $("#like_"+data1[2]).html(data1[0]);
+                     $("#dislike_"+ data1[2]).html(data1[1]);
+
+                     //alert("Data: " + data );
+                },
+                error: function(rs, e) {
+                       alert("দুইদিনের দুনিয়া। disলাইক দিয়া কি হবে");
+
+                }
+          });
+
+    })
+</script>
+    <script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
+</script>
+<script>
+    $(document).ready(function () {
+        $("#sort").change(function () {
+            var color = $(this);
+            console.log(color.val());
+            $.ajax({
+                type: "POST",
+                url: "{% url 'show_word' word.word_name %}",
+                data: {'slug': color.val(), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                success: function(data) {
+                    alert(data);
+                 },
+                error: function(rs, e) {
+                    alert("দুইদিনের দুনিয়া sort দিয়া কি হবে");
+                }
+      });
+
+    })
+        });
+
+</script>
 </body>
 </html>
+{% endblock %}

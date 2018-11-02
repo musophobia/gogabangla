@@ -1,17 +1,17 @@
+{% extends 'homeBootStrap4.html' %}
 {% load staticfiles %}
+{% block content %}
 <html lang="en">
 <head>
-   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js'></script>
-    <meta charset="UTF-8">
     {{ form.media.css }}
 
     <title>Title</title>
 </head>
 <body>
-<form method="post" >
+ <div class="container">
+        <h3>নতুন শব্দ যোগ করুন</h3>
+        <hr/>
+<form method="post"  class="bg-light shadow-lg rounded p-4 mb-4">
 {% csrf_token %}
       {% for field in form %}
       <tr>
@@ -25,19 +25,13 @@
       </tr>
     {% endfor %}
 <br>
-    <button type="submit" id="submit" name="submit" class="btn btn-primary pull-right">ধোঁকাও</button>
+      <button type="submit" id="submit" name="submit" class="btn btn-block btn-success  text-white rounded">জোরে ঢুকা শালা</button>
 </form>
+ </div>
 </body>
 {{ form.media.js }}
 <script>
-    $(document).ready(function() {
-    $("#ant").select2({ width: 700 });
-});
-     $(document).ready(function() {
-    $("#syn").select2({ width: 700 });
-});
-     $(document).ready(function() {
-    $("#words").setAttribute({ width: 700 });
-});
+
 </script>
 </html>
+{% endblock %}

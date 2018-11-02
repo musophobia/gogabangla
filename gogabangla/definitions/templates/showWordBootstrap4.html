@@ -1,0 +1,42 @@
+{% extends "homeBootStrap4.html" %}
+{% block content %}
+    <!-- এখানে একটা ফর লুপ হবে -->
+
+
+    <div class="jumbotron shadow-lg  mb-3 text-center" style="">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="text-primary"> শব্দ</h3>
+                    <h5 class="text-success"> ব্যাখ্যাঃ বাল</h5>
+                    <h6 class="mb-3">একটি প্রায়োগিক দৃশ্যঃ আমি একটা মগা।</h6>
+                    <span style="font-size: 14px!important;" class="text-danger">#ট্যাগসমূহঃ </span>
+                    <ul class="list-inline mb-4">
+                        <!-- here will be a for loop for tags-->
+
+                        <a href ="" style="font-size: 12px!important;" class="list-inline-item bg-info text-white text-center px-3 py-1 rounded-circle"> ট্যাগ১</a>
+                        <a href="" style="font-size: 12px!important;" class="list-inline-item bg-info px-3 py-1 text-white text-center rounded-circle"> ট্যাগ২</a>
+                        <a href="" style="font-size: 12px!important;" class="list-inline-item bg-info px-3 py-1 text-white text-center rounded-circle"> ট্যাগ৩</a>
+                    </ul>
+
+                    <!-- ajax will be applied upon this buttons-->
+                    <button type="button" class="btn btn-social btn-outline-success">
+	                    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                        <i>1000</i>
+                    </button>
+                    <button type="button" class="btn btn-social btn-outline-danger">
+                        <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+                        <i >1000</i>
+                    </button>
+
+
+
+                </div>
+             </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+

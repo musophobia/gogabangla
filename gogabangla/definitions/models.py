@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.forms import ModelForm
 
@@ -31,7 +32,7 @@ class Tag(models.Model):
 
 class Word(models.Model):
     # adder_id = models.CharField(max_length=100)
-    adder = models.ForeignKey(UserSocialAuth, on_delete=models.CASCADE)
+    adder = models.ForeignKey(User, on_delete=models.CASCADE)
     added_at = models.DateTimeField(auto_now_add=True)
     word_name = models.CharField(max_length=100, unique=True)
 
@@ -41,7 +42,7 @@ class Word(models.Model):
 
 class Definition(models.Model):
     word = models.ForeignKey(Word, on_delete=models.CASCADE)
-    adder = models.ForeignKey(UserSocialAuth, on_delete=models.CASCADE)
+    adder = models.ForeignKey(User, on_delete=models.CASCADE)
     synonyms = models.ManyToManyField(Word, related_name='synonyms')
     antonyms = models.ManyToManyField(Word, related_name='antonyms')
     define = models.CharField(max_length=300)
@@ -56,17 +57,34 @@ class Definition(models.Model):
     def __str__(self):
         return str(self.define)
 
+    @property
+    def total_likes(self):
+        """
+        Likes for the company
+        :return: Integer: Likes for the company
+        """
+        return self.like_count
+
+
 
 class Like(models.Model):
     definition = models.ForeignKey(Definition, on_delete=models.CASCADE)
-    liker = models.ForeignKey(UserSocialAuth, on_delete=models.CASCADE)
+    liker = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.liker.username+" "+self.definition.define)
 
 
 class Dislike(models.Model):
     definition = models.ForeignKey(Definition, on_delete=models.CASCADE)
-    dliker = models.ForeignKey(UserSocialAuth, on_delete=models.CASCADE)
+    dliker = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.dliker.username+" "+self.definition.define)
 
 class DefineForm(ModelForm):
     class Meta:
         model = Definition
         fields = ['word', 'define','sentence_ex','tags','synonyms','antonyms', 'image']
+
+

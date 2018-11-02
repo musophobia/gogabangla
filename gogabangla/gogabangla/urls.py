@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
 from django.contrib.auth import views as auth_views
+import notifications.urls
 
 from definitions import views as core_views
 
@@ -28,15 +29,18 @@ urlpatterns = [
     path('words/<str:word>',core_views.show_word, name='show_word'),
     path('words/word_by_id=<int:num>',core_views.show_id_word, name='show_id_word'),
     path('tags/<str:tag_name>',core_views.show_tag, name='show_tag'),
-    path('letters/<str:let>',core_views.lettersearch, name='show_letter'),
+    path('letter/<str:let>',core_views.lettersearch, name='show_letter'),
     path('add/',core_views.add_word, name='adder'),
+    path('profile/<str:name>',core_views.profile, name='profile'),
     #path('letters/<str:letter>',core_views.show_letter, name='show_letter'),
     #path('add',core_views.add_word, name='add_word'),
     #path('remove',core_views.remove_def, name='remove_def'),
     #path('goga_guy/<id>',core_views.goga_guy, name='goga_guy'),
     url(r'^oauth/', include('social_django.urls', namespace='social')),
     url(r'^select2/', include('django_select2.urls')),
-
+    url('search/', core_views.auto_complete, name='search'),
+    url('search_page/', core_views.search_page, name='search_page'),
+    url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
 
     #    url(r'^settings/password/$', core_views.password, name='password'),
 ]

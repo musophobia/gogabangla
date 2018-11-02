@@ -1,0 +1,60 @@
+.btn-group button {
+        background-color: #4CAF50; /* Green background */
+        border: 1px solid green; /* Green border */
+        color: white; /* White text */
+        padding: 10px 24px; /* Some padding */
+        cursor: pointer; /* Pointer/hand icon */
+        float: left; /* Float the buttons side by side */
+    }
+    /* Clear floats (clearfix hack) */
+.btn-group:after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+.btn-group button:not(:last-child) {
+        border-right: none; /* Prevent double borders */
+    }
+    /* Add a background color on hover */
+.btn-group button:hover {
+        color: #3e8e41;
+        background-color: white;
+    }
+a.social-link facebook{
+     background-color:#4a66b7;
+    color:#fff;
+    display:inline;
+    text-decoration:none;
+    padding:6px 12px;
+    margin: 0;
+    -webkit-transition: background 0.1s linear;
+    -moz-transition: background 0.1s linear;
+    -ms-transition: background 0.1s linear;
+    -o-transition: background 0.1s linear;
+    transition: background 0.1s linear;
+}
+a.twitter {
+    background-color:#00acee;
+    color:#fff;
+}
+a.gplus {
+    background-color:#dd4b38;
+    color:#fff;
+}
+
+a:hover.facebook {
+    background-color:#fff;
+    color: #4a66b7;
+}
+a:hover.twitter {
+    background-color:#fff;
+    color:#00acee;
+}
+a:hover.gplus {
+    background-color:#fff;
+    color:#dd4b38;
+}
+a:hover.email {
+    background-color:#fff;
+    color:#ff9600;
+}
