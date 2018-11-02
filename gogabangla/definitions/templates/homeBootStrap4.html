@@ -1,6 +1,6 @@
 {% load staticfiles %}
 <html lang="en">
-<<head>
+<head>
 
     {{ form.media.css }}
     <meta charset="UTF-8">
@@ -34,7 +34,7 @@
     <!--brand-->
     <!--<a class="navbar-brand" href="{% url 'home' %}">বাংলা বাকাডেমি</a>-->
     <a class="navbar-brand" href="{% url 'home' %}">
-        <img src="bakademia.png" alt="বাংলা বাকাডেমি" style="width:40px;">
+        <img src="{% static 'bakademia.png' %}" alt="বাংলা বাকাডেমি" style="">
     </a>
 
     <!--toggler-->
