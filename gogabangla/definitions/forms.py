@@ -33,8 +33,9 @@ class MyModelSelect2TagWidget(ModelSelect2TagWidget):
 #        pks = queryset.filter(**{'pk__in': list(values)}).values_list('pk', flat=True)
         cleaned_values = []
         for val in values:
-            if type(val)!=int:
-                val = queryset.create(tag=val).pk
+            word=Tag.objects.get()
+            if word is None:
+                val = queryset.create(tag=val).tag
                 #Tag.objects.create(tag=val)
             cleaned_values.append(val)
         return cleaned_values
@@ -51,7 +52,7 @@ class DefinitionForm(forms.ModelForm):
                                                   'rows':'4',
                                                   'id':'ex', 'class':'form-group form-control'}), max_length=1000)
     tags = ModelMultipleChoiceField(queryset=Tag.objects.all(), label='ট্যাগসমূহ', widget=
-    MyModelSelect2TagWidget(attrs={'id':'tags', 'class':'form-group form-control mb-2', 'placeholder':''}))
+    Select2MultipleWidget(attrs={'id':'tags', 'class':'form-group form-control mb-2', 'placeholder':''}))
     synonyms= ModelMultipleChoiceField(required=False, queryset=Word.objects.all(), label='সমার্থক শব্দ', widget=
     Select2MultipleWidget(attrs={'data-placeholder': 'সমার্থক শব্দ বাছাই করুন', 'id':'syn',  'class':'form-group form-control  mb-2'}))
     antonyms = ModelMultipleChoiceField(required=False, queryset=Word.objects.all(), label='বিপরীত শব্দ', widget=
@@ -125,8 +126,6 @@ class DefinitionForm(forms.ModelForm):
         return s
 
 
-
-
     # def clean_tags(self):
     #     w=self.cleaned_data['tags']
     #     print(w)
@@ -134,12 +133,11 @@ class DefinitionForm(forms.ModelForm):
     #         try:
     #             t1=t.tag
     #             print(t1)
-    #             wo = Tag.objects.get(tag=t1)
+    #             wo = Tag.objects.get(pk=t.pk)
     #         except Tag.DoesNotExist:
     #             Tag.objects.create(tag=t1)
-    #             wo = Tag.objects.get(tag=t1)
     #         print(wo)
-    #     return w
+    #     return wo
 
 class SearchForm(forms.Form):
     word_name=forms.CharField(required=True, label="", max_length=100, widget=

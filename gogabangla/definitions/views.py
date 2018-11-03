@@ -13,10 +13,10 @@ from .models import Definition, Word, Tag, Like, Dislike
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
-@login_required
+
 def home(request):
     searchform = SearchForm()
-    return render(request, 'homeBootStrap4.html', {'searchform':searchform})
+    return render(request, 'home.html', {'searchform':searchform})
 
 
 def show_word(request, word):
@@ -76,6 +76,9 @@ def show_word(request, word):
             return HttpResponse(10)
     word = Word.objects.get(word_name=word)
     definition = Definition.objects.filter(word=word).order_by('-like_count')
+    #like dislike er jonno ei duita pathaite hobe
+    # likes=Like.objects.filter(liker=request.user, definition__word_name=word)
+    # dislikes = Like.objects.filter(dliker=request.user, definition__word_name=word)
     searchform = SearchForm()
     context = {
         'word': word,
@@ -127,7 +130,6 @@ def lettersearch(request, let):
         'ew':fh,
         'ter':let,
         'searchform':searchform,
-
     }
     ##way 2###return HttpResponse(template.render(context, request))
     return render(request, 'letter_search.html', context)
@@ -141,7 +143,6 @@ def add_word(request):
             model_instance.adder= request.user
             model_instance.save()
             form.save_m2m()
-            form=DefinitionForm()
             word=get_object_or_404(Word, word_name=model_instance.word)
             definition = Definition.objects.filter(word=word)
             searchform = SearchForm()
@@ -216,3 +217,10 @@ def username_set(request):
             user.save()
             return redirect('/')
     return render(request,'username_set.html', {'UserNameForm':form})
+
+
+
+def logout(request):
+    logout(request.user)
+    searchform = SearchForm()
+    return render(request, 'home.html', {'searchform': searchform})

@@ -13,7 +13,7 @@
                 <div class="row">
                     <div class="col-md-7">
                         <h6>শব্দটি যোগ করেছেন <a style="font-size:18px;!important" href="{% url 'profile' word.adder.username %}">{{word.adder }}</a></h6>
-                        <p>তারিখঃ {{word.added_at}}</p>
+                        <p style="font-size:12px!important;">তারিখঃ {{word.added_at}}</p>
                     </div>
                     <div class="col-md-3 m-1">
                         <a href="#"  data-toggle="modal" data-target="#synonymModal" class="" id="synonym">সমার্থক শব্দ</a>
@@ -95,11 +95,12 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <h6 class="">শেয়ার করুনঃ</h6>
+
+                        <span style="font-size:14px!important;" class="fa fa-share-alt mb-3">  শেয়ার করুনঃ</span>
                         <div class="tags">
-                            <a class="social-link btn-facebook p-1 mr-4" href="http://www.facebook.com/sharer.php?u={% url 'show_word' word.word_name %}" id="fb-share"
+                            <a class="social-link facebook  mr-3" href="http://www.facebook.com/sharer.php?u={% url 'show_word' word.word_name %}" id="fb-share"
                                rel="nofollow" target="_blank" title="Share on Facebook" ><i class="fa fa-facebook"></i> ফেসবুক</a>
-                            <a class="social-link gplus p-1" id="gplus-share" href="https://plus.google.com/share?url={% url 'show_word' word.word_name %}" title="share it">
+                            <a class="social-link gplus " target="_blank" id="gplus-share" href="https://plus.google.com/share?url={% url 'show_word' word.word_name %}" title="share it">
                                 <i class="fa fa-google-plus"></i>গুগল প্লাস</a>
                         </div>
                     </div>
@@ -110,15 +111,20 @@
 
     </div>
     {% for def in definitions %}
-    <div class="jumbotron bg-white shadow-lg  mb-3 text-center" style="">
+    <div class="jumbotron bg-white shadow-lg  mb-3 text-center" style="padding:15px!important;">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h3 class="text-primary"> {{ word.word_name }}</h3>
-                    <h5 class="text-success"> ব্যাখ্যাঃ {{ def.define }} </h5>
-                    <h6 class="mb-3">একটি প্রায়োগিক দৃশ্যঃ {{ def.sentence_ex }} </h6>
+                    <h5 class="text-primary"> {{ word.word_name }}</h5>
+                    <h6 style="color:#691B1B!important;">ব্যাখ্যাঃ <span class="text-success">{{ def.define }}</span> </h6>
+                    <h6 style="color:#691B1B!important; font-size:15px!important;" class="mb-3">একটি প্রায়োগিক দৃশ্যঃ <span style="color:#202097!important;">{{ def.sentence_ex }} </span></h6>
+                    <p class="text-info" style="font-style: italic;font-size:14px!important;">ব্যাখ্যা করেছেন
+                        <a style=" font-weight: bold;font-size:16px!important;" href="{% url 'profile' def.adder.username %}">
+                            {{ def.adder }}
+                        </a> <span style="color:black;">{{def.added_at}} </span>তারিখে
+                    </p>
+                    <span style="font-size: 14px!important;" class="text-danger"> #ট্যাগসমূহ </span><br>
                     <ul class="list-inline mb-4">
-                        <span style="font-size: 14px!important;" class="text-danger"> #ট্যাগসমূহ </span>
                         {% for t in def.tags.all %}
                            <a href ="{% url 'show_tag' t.tag %}" style="font-size: 12px!important;" class="list-inline-item bg-info text-white text-center px-3 py-1 rounded-circle">{{ t.tag }}</a>
                         {% endfor %}
@@ -126,18 +132,33 @@
 
                     <!-- ajax will be applied upon this buttons-->
 
-
-
-                    <button type="submit"  id="like"  name="{{ def.id }}" value="likebutton" class="btn btn-social btn-outline-success likebutton">
+                    {%  if request.user.is_authenticated  %}
+                    <button type="submit" onclick="myFunctionLike()"  id="like"  name="{{ def.id }}" value="likebutton" class="btn btn-social btn-outline-success likebutton">
 	                    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
                         <i id="like_{{ def.id }}">
                              {{ def.like_count }}
                         </i>
                     </button>
-                    <button type="submit" id="dislike" name="{{ def.id }}" value="dislikebutton" class="btn btn-social btn-outline-danger dislikebutton">
+                    <button type="submit"  id="dislike" name="{{ def.id }}" value="dislikebutton" class="btn btn-social btn-outline-danger dislikebutton">
                         <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
                         <i id="dislike_{{ def.id }}">{{ def.dislike_count }}</i>
                     </button>
+
+                    {% else %}
+
+                    <button  href="#logInPart"  data-toggle="modal" type="submit"  id="like2"  name="{{ def.id }}" value="likebutton" class="btn btn-social btn-outline-success">
+	                    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                        <i id="like2_{{ def.id }}">
+                             {{ def.like_count }}
+                        </i>
+                    </button>
+                    <button href="#logInPart"  data-toggle="modal" type="submit" id="dislike2" name="{{ def.id }}" value="dislikebutton" class="btn btn-social btn-outline-danger">
+                        <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+                        <i id="dislike2_{{ def.id }}">{{ def.dislike_count }}</i>
+                    </button>
+
+
+                    {% endif %}
                      </div>
             </div>
         </div>
@@ -148,6 +169,7 @@
 
 <script>
 $('.likebutton').click(function(){
+    // Do something
       $.ajax({
                type: "POST",
                url: "{% url 'show_word' word.word_name %}",
@@ -166,13 +188,16 @@ $('.likebutton').click(function(){
                        alert("দুইদিনের দুনিয়া। লাইক দিয়া কি হবে");
 
                 }
+
           });
 
     })
 
 </script>
+
 <script>
     $('.dislikebutton').click(function(){
+
       $.ajax({
                type: "POST",
                url: "{% url 'show_word' word.word_name %}",

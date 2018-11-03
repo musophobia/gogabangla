@@ -49,9 +49,12 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'adder' %}">শব্দযোগ</a>
             </li>
-            <li class="nav-item">
+            {%  if request.user.is_authenticated  %}
+                <li class="nav-item">
                 <a class="nav-link" href="{% url 'profile' request.user.username %}">প্রোফাইল</a>
             </li>
+            {% else %}
+            {% endif %}
 
 
         </ul>
@@ -75,9 +78,16 @@
             </li>
         </ul>
         <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="modal" href="#logInPart">ঢুকে পড়ুন</a>
+            {% if request.user.is_authenticated %}
+             <li class="nav-item">
+                <a class="nav-link " href="{% url 'logout' %}">লগ আউট</a>
+             </li>
+
+            {% else %}
+             <li class="nav-item">
+                <a class="nav-link " data-toggle="modal" href="#logInPart">লগ ইন</a>
             </li>
+            {% endif %}
         </ul>
     </div>
 
@@ -89,16 +99,16 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">তাড়াতাড়ি ঢুকে পড়ুন দিকি দাদা</h5>
+                <h5 class="modal-title">লগ ইন</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <a class="btn btn-block btn-social btn-google text-white" id="btnGoogle">
+                <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-block btn-social btn-google text-white" id="btnGoogle">
                     <span class="fa fa-google text-white"></span> Sign in with Google
                 </a>
-                <a class="btn btn-block btn-social btn-facebook text-white" id="btnFacebook">
+                <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-block btn-social btn-facebook text-white" id="btnFacebook">
                     <span class="fa fa-facebook text-white"> </span> Sign in with Facebook
                 </a>
             </div>
@@ -135,6 +145,8 @@
                         <a class="card-link text-white" data-toggle="collapse" href="#collapseOne"> <h5>অক্ষর পঞ্জিকা</h5> </a>
                         </div>
                     </div>
+
+                <!--okkhor ponjika-->
 
                     <div id="collapseOne" class="collapse show" data-parent="#accordion">
                         <div class="card-body ">
@@ -204,7 +216,7 @@
                     <div id="collapseTwo" class="collapse show" data-parent="#accordion">
                         <div class="card-body text-center ">
                             <p>
-                                <a style="font-size:24px!important" href="{% url 'show_word' today_word.word_name %}"> {{ today_word }} </a>
+                                <a class="word_today" style="font-size:32px!important" href="{% url 'show_word' today_word.word_name %}"> {{ today_word }} </a>
                             </p>
                         </div>
                     </div>
@@ -212,26 +224,6 @@
 
                 </div>
 
-                <div class="card">
-                    <div class="card-header text-white bg-info">
-                        <a class="card-link text-white" data-toggle="collapse" href="#collapseThree">
-                            <h5>সবচেয়ে লাইকপ্রাপ্ত শব্দ</h5>
-                        </a>
-
-                    </div>
-
-                    <div id="collapseThree" class="collapse show" data-parent="#accordion">
-                        <div class="card-body">
-                            <p>
-
-                                আমরা বোক্সোদ না। এইটাতেও একদিন শব্দে শব্দে ভরে দিবো।
-                                আমরা বোক্সোদ না। এইটাতেও একদিন শব্দে শব্দে ভরে দিবো।
-                            </p>
-                        </div>
-                    </div>
-
-
-                </div>
 
             </div>
 
@@ -251,7 +243,33 @@
 
     </div>
 </footer>
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '{276616036454673}',
+      cookie     : true,
+      xfbml      : true,
+      version    : '{v3.0}'
+    });
 
+    FB.AppEvents.logPageView();
+
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<script>
+    $('.disabled').click(function(e){
+    e.preventDefault();
+});
+</script>
 
 </body>
 </html>

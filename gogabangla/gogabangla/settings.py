@@ -155,7 +155,7 @@ SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'username_set'
 
 LANGUAGE_CODE = 'en-us'
 

@@ -19,12 +19,14 @@
    .btn-group button:hover {
             color: #3e8e41;
             background-color: white;
+            text-decoration: none;
         }
+
 
    a.social-link {
         display:inline;
         text-decoration:none;
-        padding:6px 12px;
+        padding:0px 12px;
         margin: 0;
         -webkit-transition: background 0.1s linear;
         -moz-transition: background 0.1s linear;
@@ -35,6 +37,7 @@
     a.facebook{
         background-color:#4a66b7;
         color:#fff;
+        text-decoration: none;
     }
     a.twitter {
         background-color:#00acee;
@@ -43,6 +46,7 @@
     a.gplus {
         background-color:#dd4b38;
         color:#fff;
+        text-decoration: none;
     }
     a.email {
         background-color:#ff9600;
@@ -51,16 +55,30 @@
     a:hover.facebook {
         background-color:#fff;
         color: #4a66b7;
+        text-decoration: none;
     }
     a:hover.twitter {
         background-color:#fff;
         color:#00acee;
+        text-decoration: none;
     }
     a:hover.gplus {
         background-color:#fff;
         color:#dd4b38;
+        text-decoration: none;
     }
     a:hover.email {
         background-color:#fff;
         color:#ff9600;
+    }
+
+    .word_today{
+        color:#000;
+        font-style: italic;
+        font-weight: bold;
+        text-decoration:none;
+    }
+    .word_today:hover{
+        color:blue;
+        text-decoration:none;
     }
