@@ -10,7 +10,6 @@ from .models import Tag, Word, Definition
 from langdetect import detect
 from social_django.models import UserSocialAuth
 from django.utils.translation import gettext_lazy as _
-import regex
 
 
 
@@ -42,16 +41,16 @@ class MyModelSelect2TagWidget(ModelSelect2TagWidget):
 
 
 class DefinitionForm(forms.ModelForm):
-    word=forms.CharField(required=True, label='শব্দ', max_length=100, widget=
+    word=forms.CharField(required=True, label='শব্দ *', max_length=100, widget=
                         TextInput(attrs={'id':'words', 'class':'form-group form-control','placeholder':"এখানে শব্দটি লিখুন..."}))
-    define=forms.CharField(required=True, label='শব্দের ব্যাখ্যা',
+    define=forms.CharField(required=True, label='শব্দের ব্যাখ্যা *',
                            widget=Textarea(attrs={'placeholder':'শব্দের ব্যাখ্যা লিখুন...', 'rows':'2',
                                                   'id':'def', 'class':'form-group form-control'}),
                            max_length=800)
-    sentence_ex=forms.CharField(required=True, label='শব্দটি সম্বলিত একটি বাক্য', widget= Textarea(attrs={'placeholder':'এখানে বাক্যটি লিখুন...',
+    sentence_ex=forms.CharField(required=True, label='শব্দটি সম্বলিত একটি বাক্য *', widget= Textarea(attrs={'placeholder':'এখানে বাক্যটি লিখুন...',
                                                   'rows':'4',
                                                   'id':'ex', 'class':'form-group form-control'}), max_length=1000)
-    tags = ModelMultipleChoiceField(queryset=Tag.objects.all(), label='ট্যাগসমূহ', widget=
+    tags = ModelMultipleChoiceField(queryset=Tag.objects.all(), label='ট্যাগসমূহ *', widget=
     Select2MultipleWidget(attrs={'id':'tags', 'class':'form-group form-control mb-2', 'placeholder':''}))
     synonyms= ModelMultipleChoiceField(required=False, queryset=Word.objects.all(), label='সমার্থক শব্দ', widget=
     Select2MultipleWidget(attrs={'data-placeholder': 'সমার্থক শব্দ বাছাই করুন', 'id':'syn',  'class':'form-group form-control  mb-2'}))
@@ -71,22 +70,23 @@ class DefinitionForm(forms.ModelForm):
     def clean_word(self):
         w= self.cleaned_data['word']
         print(self.cleaned_data)
-        #tas = self.cleaned_data['tags']
-        #print(tas)
-        #print(w)
-
+        restricted_names=["শেখ", "হাসিনা", "লীগ", "মুজিব", "শেখ মুজিবুর রহমান", "বঙ্গবন্ধু", "জিয়া", "খালেদা" ]
         try:
             wo=Word.objects.get(word_name=w)
         except Word.DoesNotExist:
+            for word in restricted_names:
+                if word in w:
+                    raise forms.ValidationError("অনুগ্রহ করে সঠিক শব্দটি লিখুন")
             isBang = True
             for c in w:
                 if c != ' ':
-                    if detect(c) != 'bn':
-                        isBang = False
-
+                    try:
+                        if detect(c) != 'bn':
+                            isBang = False
+                    except:
+                        pass
             if isBang == False:
-                raise forms.ValidationError("মাঙ্গের পুলা বাংলা দে ")
-
+                raise forms.ValidationError("অনুগ্রহ করে বাংলা শব্দ লিখুন")
             u = self.request
             Word.objects.create(word_name=w, adder=u)
             wo = Word.objects.get(word_name=w)
@@ -109,21 +109,21 @@ class DefinitionForm(forms.ModelForm):
     #
     #     return s
 
-    def clean_sentence_ex(self):
-        data = super().clean()
-        #print('hui')
-        s = data.get('sentence_ex')
-        try:
-            w=(data.get('word')).word_name
-        except:
-            return s
+    # def clean_sentence_ex(self):
+    #     data = super().clean()
+    #     #print('hui')
+    #     s = data.get('sentence_ex')
+    #     try:
+    #         w=(data.get('word')).word_name
+    #     except:
+    #         return s
         #print('chui')
 
 
         #print(s)
-        if w not in s:
-            raise forms.ValidationError("উদাহরণ দিলেন যার মধ্যে শব্দই নাই। ফাইজলামি?")
-        return s
+        # if w not in s:
+        #     raise forms.ValidationError("উদাহরণে অবশ্যই যোগ করা শব্দটির উল্লেখ থাকতে হবে")
+        # return s
 
 
     # def clean_tags(self):
@@ -146,18 +146,46 @@ class SearchForm(forms.Form):
 
 
 class UserNameForm(forms.Form):
-    word_name=forms.CharField(required=True, label="ছদ্মনাম", max_length=100, widget=
+	username=forms.CharField(required=True, label="ছদ্মনাম", max_length=100, widget=
                         TextInput(attrs={'id':'username', 'class':'form-group form-control   border-top-0 border-left-0 border-right-0','placeholder':"এখানে ছদ্মনামটি লিখুন..."}))
 
-    def clean_word_name(self):
-        w = self.cleaned_data['word_name']
-        print(self.cleaned_data)
-        try:
-            user=User.objects.get(username=w)
-            raise forms.ValidationError("ei naam khali nai")
-        except:
-            print("ldsfdosgbi")
-        return w
+	# def clean_username(self):
+	# 	data = super().clean()
+	# 	w = data.get('username')
+	# 	try:
+	# 		user=User.objects.get(username=w)
+	# 		if user is not None:
+	# 			raise forms.ValidationError('অন্য নাম দিন')
+	# 	except:
+	# 		print("ldsfdosgbi")
+	# #return w
+	# 	return w
+class UpdateForm(forms.ModelForm):
+    define=forms.CharField(required=True, label='define',
+                           widget=Textarea(attrs={'placeholder':'write bitch', 'rows':'2','cols':'80',
+                                                  'id':'def', 'class':'form-group'}),
+                           max_length=800)
+    sentence_ex=forms.CharField(required=True, label='Example', widget= Textarea(attrs={'placeholder':'write bitch',
+                                                  'rows':'4','cols':'80',
+                                                  'id':'ex', 'class':'form-group'}), max_length=1000)
+    tags = ModelMultipleChoiceField(queryset=Tag.objects.all(), label='Tags', widget=
+    MyModelSelect2TagWidget(attrs={'style': 'min-width:700'}))
+    synonyms= ModelMultipleChoiceField(required=False, queryset=Word.objects.all(), label='Synonyms', widget=
+    Select2MultipleWidget(attrs={'data-placeholder': 'Please choose synonyms', 'id':'syn'}))
+    antonyms = ModelMultipleChoiceField(required=False, queryset=Word.objects.all(), label='বিপরীত শব্দ', widget=
+    Select2TagWidget(attrs={'data-placeholder': 'Please choose antonyms', 'id':'ant'}))
+
+    class Meta:
+        model = Definition
+        fields = ['define', 'sentence_ex', 'tags', 'synonyms', 'antonyms']
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(UpdateForm, self).__init__(*args, **kwargs)
+
+    # def __init__(self, *args, **kwargs):
+    #     self.request = kwargs.pop('request', None)
+    #     super(DefinitionForm, self).__init__(*args, **kwargs)
 # class SearchForm(forms.Form):
 #
 #

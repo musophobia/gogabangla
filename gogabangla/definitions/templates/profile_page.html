@@ -1,5 +1,8 @@
 {% extends "homeBootStrap4.html" %}
 {% load static %}
+{% block header %}
+<title> {{ user.username }} - প্রোফাইল </title>
+{% endblock %}
 {% block content %}
 
     <div class="container" >
@@ -13,7 +16,7 @@
 
                         <ul class="nav nav-tabs">
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#about">ব্যক্তিগত তথ্য</a>
+                                <a class="nav-link active" data-toggle="tab" href="#about">পরিচয়</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#wordMenu">শব্দ ও ব্যাখ্যা</a>
@@ -23,6 +26,7 @@
                         <!-- Tab panes -->
                         <div class="tab-content">
                             <div id="about" class="container tab-pane active shadow"><br>
+                            	{% if request.user.id == user.id %}
                                 <div class="row border">
                                     <div class="col-md-6">
                                         <h6>নাম</h6>
@@ -32,16 +36,21 @@
                                     </div>
                                     <hr>
                                 </div>
+                            	{% endif %}
                                 <div class="row border">
                                     <div class="col-md-6">
                                         <h6>ছদ্মনাম</h6>
                                     </div>
                                     <div class="col-md-6">
-                                        <p>{{ user.username }}</p>
+                                        <p>{{ user.username }} 
+                                        {% if request.user.id == user.id %}
+                                        <a style="float:right; font-size:14px!important;" class="" href="{% url 'username_set' %}">পরিবর্তন করুন</a>
+                                        {% endif %}
+                                    	</p>
                                     </div>
                                     <hr>
                                 </div>
-                                <div class="row border">
+<!--                                 <div class="row border">
                                     <div class="col-md-6">
                                         <h6>ইমেইল</h6>
                                     </div>
@@ -49,7 +58,7 @@
                                         <p class="text-primary">{{ user.email }}</p>
                                     </div>
                                     <hr>
-                                </div>
+                                </div> -->
                                 <div class="row border">
                                     <div class="col-md-6">
                                         <h6>যোগকৃত শব্দসংখ্যা</h6>
@@ -73,15 +82,18 @@
 
 
                             <div id="wordMenu" class="container tab-pane fade"><br>
-                                <h6>আপনার যোগকৃত শব্দ ও ব্যাখ্যা</h6><br>
+                                <h6> যোগকৃত শব্দ ও ব্যাখ্যা</h6><br>
                                 {% for def in defon %}
                                     <div class="card shadow rounded">
-                                        <div class="card-header bg-secondary text-white ">
+                                        <div class="card-header bg-info text-white ">
                                            <a class="text-white" href="{% url 'show_word' def.word.word_name %}">
                                                 <h5> {{ def.word.word_name }} </h5> </a>
                                         </div>
                                         <div class="card-body">
                                             <span>ব্যাখ্যাঃ {{ def.define }}</span>
+                                        	{% if request.user.id == user.id %}
+                                        	<!--	<a href="{% url 'update' def.id %}"> edit  <a> -->
+                                        	{% endif %}
                                         </div>
                                     </div>
                                 {% endfor %}

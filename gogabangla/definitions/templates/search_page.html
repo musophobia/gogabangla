@@ -3,20 +3,24 @@
 {% block content %}
 
 
-    <div class="container">
+    <div class="container ">
+    <h3 class="mb-3">{{ search_word }} অন্বেষণের ফলাফলঃ</h3><hr>
                 <ul>
-                    {% if word is not None %}
+                    {% if  word %}
                 {% for w in word %}
-                   <div class="card mb-3  shadow rounded">
-                        <div class="card-body bg-secondary rounded text-center text-white">
+                   <div class="card mb-3 mr-4 shadow rounded">
+                        <div class="card-body bg-info rounded text-center text-white">
                            <a class="text-white" href="{% url 'show_word' w.word_name %}">
-                               <h5> {{ w.word_name }} </h5> </a>
+                               <h4> {{ w.word_name }} </h4> </a>
                         </div>
                  </div>
                 {% endfor %}
                     {% else %}
-                    kono word nai shala
+                <h4>এখনো শব্দটির কোনো ব্যাখ্যা যোগ করা হয়নি<span class="fa fa-frown"></span></h4>
+                <h6> যোগ করতে চাইলে <a href="{% url 'adder'%}"> এখানে ক্লিক করুন</a> </h6>
+                
                     {% endif %}
                  </ul>
+    <hr>
             </div>
 {% endblock %}

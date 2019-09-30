@@ -24,7 +24,7 @@ SECRET_KEY = 'onx$yn@0s&!%xaoa+u7j3s(*t23g@=z8ahpk@o00m7m(9mb3p_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['bakademia.com','www.bakademia.com','139.59.94.5',]
 
 # Application definition
 
@@ -34,11 +34,14 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social_django',
-    'definitions',
+    'gogabangla.definitions',
     'django_select2',
+	'rest_framework',
+    'corsheaders',
     'notifications',
 ]
 
@@ -53,7 +56,7 @@ MIDDLEWARE = [
     'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
-ROOT_URLCONF = 'gogabangla.urls'
+ROOT_URLCONF = 'gogabangla.gogabangla.urls'
 
 TEMPLATES = [
     {
@@ -68,7 +71,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
-                "definitions.context_processors.today_word"
+                "gogabangla.definitions.context_processors.today_word"
             ],
         },
     },
@@ -81,11 +84,14 @@ DJANGO_NOTIFICATIONS_CONFIG = { 'SOFT_DELETE': True}
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'bakademia',
+        'USER': 'baka',
+        'PASSWORD': '123',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
-
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 
@@ -128,6 +134,17 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.debug.debug',
 )
 
+
+
+# Force https redirect
+#SECURE_SSL_REDIRECT = True
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# Force HTTPS in the final URIs
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
+DEBUG=False
+
+
 SOCIAL_AUTH_GOOGLE_OAUTH2_IGNORE_DEFAULT_SCOPE = True
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'https://www.googleapis.com/auth/userinfo.email',
@@ -149,17 +166,18 @@ SOCIAL_AUTH_FACEBOOK_SECRET = '38b97c93d973d4a8420088e342fe3692'  # App Secret
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '913143340331-6rm337si40fu1qcoaqs1t872e3dnv45q.apps.googleusercontent.com'  # Paste CLient Key
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'XBMdoPTwWanQcple2kSw7kWz'  # Paste Secret Key
 
-SOCIAL_AUTH_LOGIN_ERROR_URL = '/settings/'
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/settings/'
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'ulgin'
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 
-LOGIN_URL = 'login'
-LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = 'username_set'
-
+LOGIN_URL = '/'
+LOGOUT_URL = '/'
+LOGIN_REDIRECT_URL = 'ulgin'
+LOGOUT_REDIRECT_URL = '/'
+SITE_ID=1
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Dhaka'
 
 USE_I18N = True
 
@@ -170,4 +188,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
+#STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = '/static/'
+STATIC_ROOT = '/home/baka/static/'
+

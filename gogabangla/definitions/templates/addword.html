@@ -1,8 +1,12 @@
 {% extends 'homeBootStrap4.html' %}
 {% load staticfiles %}
+{% block header %}
+<title> শব্দযোগ </title>
+{% endblock %}
+
 {% block content %}
-
-
+<style>
+</style>
  <div class="container">
         <h3>নতুন শব্দ যোগ করুন</h3>
         <hr/>
@@ -13,7 +17,7 @@
         <th>{{ field.label_tag }}</th> <br>
         <td>
             {{ field }}
-            {{ field.errors }}
+         {{ field.errors }}
             {{ field.help_text }}
         </td>
           <br>
@@ -23,6 +27,9 @@
       <button type="submit" id="submit" name="submit" class="btn btn-block btn-success  text-white rounded">শব্দটি যোগ করুন</button>
 </form>
  </div>
+
+	
+
 
 
 <script>

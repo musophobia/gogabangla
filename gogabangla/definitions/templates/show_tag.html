@@ -1,13 +1,18 @@
 {% extends "homeBootStrap4.html" %}
 {% load static %}
+
+{% block header %}
+<title> #ট্যাগঃ  {{ tag.tag }} </title>
+{% endblock %}
+
 {% block content %}
 
-    <div class="container">
+    <div class="container ">
                 <h4 class="text-info">#ট্যাগঃ  {{ tag.tag }}</h4><hr>
-                <ul>
+    			{% if definitions.all %}
                 {% for def in definitions %}
-                   <div class="card shadow rounded">
-                        <div class="card-header bg-secondary text-white">
+                   <div class="card shadow-lg rounded">
+                        <div class="card-header bg-info text-white">
                            <a class="text-white" href="{% url 'show_word' def.word.word_name %}">
                                <h5> {{ def.word.word_name }} </h5> </a>
                         </div>
@@ -16,7 +21,10 @@
                     </div>
                  </div>
                 {% endfor %}
-                 </ul>
+    			{% else %}
+    				<p>অন্বেষণ করে কিছু পাওয়া যায়নি</p>
+    			{% endif %}
+                
             </div>
 
 {% endblock %}

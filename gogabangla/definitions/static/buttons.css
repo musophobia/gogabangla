@@ -79,6 +79,12 @@
         text-decoration:none;
     }
     .word_today:hover{
-        color:blue;
+        color:red;
         text-decoration:none;
     }
+	.list-group-item:hover{
+    color:white;
+    textdecoration:none;
+    background-color:blue;
+    
+	}

@@ -1,3 +1,43 @@
 {% extends "homeBootStrap4.html" %}
+{% block header %}
+<title> বাংলা বাকাডেমি প্রাঙ্গণ </title>
+{% endblock %}
 {% block content %}
+<div style="border-left: 4px solid blue;border-right: 4px solid blue; background-color: lightblue; text-align: center;" class="text-black shadow-lg  mb-4">
+	<p style="padding:25px;">বাংলা বাকাডেমি উন্মুক্ত বাংলা শব্দসমাবেশ তৈরিতে কাজ করছে। প্রমিত বাংলা শব্দের প্রচলিত অর্থ, গূঢ় অর্থ এবং নিগূঢ় অর্থ যোগ করে হয়ে উঠুন বাঁকাডেমিয়ান।  </p>
+</div>
+<div class="infinite-container">
+{% for def in latest_def %}
+<div class="infinite-item card shadow-lg mb-3 text-center rounded">
+	<div class="card-body">
+    	<h4 class="text-primary mb-3" style="font-weight:normal;"> {{ def.word.word_name }}</h3>
+        <h6 class="mb-3" style="color:#691B1B!important;">ব্যাখ্যাঃ <span class="text-dark">{{ def.define|truncatewords_html:200 }}</span> </h5>
+    	<p style="font-size:14px!important;">শব্দটির সকল ব্যাখ্যা জানতে <a href="{% url 'show_word' def.word.word_name %}"> এখানে ক্লিক করুন</a></p>
+	</div>
+</div>
+
+
+{% endfor %}
+</div>
+
+ {% if latest_def.has_next %}
+    <a class="infinite-more-link" href="?page={{ latest_def.next_page_number }}"></a>
+  {% endif %}
+
+  <div class="loading justify-content-center mt-4" style="display: none;">
+    <span class="border shadow-lg text-white bg-danger">Loading...<span>
+  </div>
+
+
+ <script>
+    var infinite = new Waypoint.Infinite({
+      element: $('.infinite-container')[0],
+      onBeforePageLoad: function () {
+        $('.loading').show();
+      },
+      onAfterPageLoad: function ($items) {
+        $('.loading').hide();
+      }
+    });
+  </script>
 {% endblock %}

@@ -16,11 +16,13 @@
     }
 }
 
+
 body {
+	
     position: relative;
     min-height: 100vh;
     margin: 0;
-    padding-top: 110px;
+    padding-top: 120px;
     padding-bottom: 40px;
 }
 

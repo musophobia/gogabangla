@@ -1,5 +1,10 @@
 {% extends "homeBootStrap4.html" %}
 {% load static %}
+
+{% block header %}
+<title> অক্ষরঃ {{ ter }} </title>
+{% endblock %}
+
 {% block content %}
 
 
@@ -7,22 +12,28 @@
 
 <!--foor loop hobe-->
 
-<div class="container">
+<div class="container mb-3">
 
     <div class="row">
         <!--for loop-->
+    {% if word %}
         {% for t in word %}
              {% if forloop.counter < ew %}
         <div class="col-md-6  list-group list-group-flush">
-            <a href="{% url 'show_word' t.word_name %}" class="list-group-item list-group-item-action">{{ t.word_name }}</a>
+            <a style="font-size:19px;" href="{% url 'show_word' t.word_name %}" class="list-group-item list-group-item-action listhover">{{ t.word_name }}</a>
         </div>
             {% else %}
         <div class="col-md-6  list-group list-group-flush">
-             <a href="{% url 'show_word' t.word_name %}" class="list-group-item list-group-item-action">{{ t.word_name }}</a>
+             <a style="font-size:19px;" href="{% url 'show_word' t.word_name %}" class="list-group-item list-group-item-action listhover">{{ t.word_name }}</a>
         </div>
          {% endif %}
         {% endfor %}
+	{% else %}
+		<p> অন্বেষণ করে কিছু পাওয়া যায়নি</p>
+	{% endif%}
+		
     </div>
 </div>
+<hr>
 
 {% endblock %}

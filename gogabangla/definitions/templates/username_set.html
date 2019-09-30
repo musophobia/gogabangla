@@ -1,8 +1,25 @@
 {% extends "homeBootStrap4.html" %}
 {% load static %}
+
+{% block header %}
+<title> নতুন ছদ্মনাম দিন </title>
+ <script>
+            {% if messages %}
+                {% for message in messages %}
+                    alert(message);
+                {% endfor %}
+            {% endif %}
+ </script>
+{% endblock %}
+
 {% block content %}
+	{% if errorMessage %}
+	<div class="p-3 mb-3 border text-danger" style="background-color: rgba(255,200,200,1);">
+    	<p> {{ errorMessage }}</p>
+	</div>
+	{% endif %}
     <div class="container mx-auto p-4  fluid">
-        {{ user.username }}
+        <h2>{{ user.username }}</h2> <hr>
         <form method="post">
             {% csrf_token %}
             {{ UserNameForm }}
