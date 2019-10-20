@@ -1,0 +1,157 @@
+{% extends "homeBootStrap4.html" %}
+{% load static %}
+
+{% block header %}
+<title> {{ def.word.word_name }} </title>
+	<meta property="og:url" content="https://bakademia.com/word_def/def_id={{def.id}}" />
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="{{ def.word.word_name }}"/>
+	<meta property="og:description" content="ব্যাখ্যাঃ {{ def.define }}। বাংলা বাকাডেমি উন্মুক্ত বাংলা শব্দসমাবেশ তৈরিতে কাজ করছে। প্রমিত বাংলা শব্দের প্রচলিত অর্থ, গূঢ় অর্থ এবং নিগূঢ় অর্থ যোগ করে হয়ে উঠুন বাঁকাডেমিয়ান..." />
+	<meta property="og:image" content="{% static 'logo.png' %}"/>
+	<meta property="og:image:width" content="600"/>
+	<meta property="og:image:height" content="300"/>
+	<meta property="og:site_name" content="বাংলা বাকাডেমি"/>
+{% endblock %}
+
+{% block content %}
+
+<div  class="jumbotron bg-white shadow-lg  mb-3 text-center" style="padding:15px!important;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 id="{{ def.id }}" class="text-primary"> {{ def.word.word_name }}</h4>
+                    <h6 style="color:#691B1B!important;">ব্যাখ্যাঃ <span class="text-success">{{ def.define }}</span> </h6>
+                    <h6 style="color:#691B1B!important; font-size:15px!important;" class="mb-3">একটি প্রায়োগিক দৃশ্যঃ <span style="color:#202097!important;">{{ def.sentence_ex }} </span></h6>
+                    <p class="text-info" style="font-style: italic;font-size:14px!important;">ব্যাখ্যা করেছেন &nbsp;
+                        <a style=" font-weight: bold;font-size:16px!important;" href="{% url 'profile' def.adder.username %}">
+                            {{ def.adder }} &nbsp;
+                        </a> <span style="color:black;">{{def.added_at}} </span> &nbsp;তারিখে &nbsp;
+                    </p>
+                    <span style="font-size: 14px!important;" class="text-danger"> #ট্যাগসমূহ </span><br>
+                    <ul class="list-inline mb-4">
+                        {% for t in def.tags.all %}
+                           <a href ="{% url 'show_tag' t.tag %}" style="font-size: 12px!important;" class="list-inline-item bg-info text-white text-center px-3 py-1 rounded-circle">{{ t.tag }}</a>
+                        {% endfor %}
+                    </ul>
+
+                    <!-- ajax will be applied upon this buttons-->
+
+                    {%  if request.user.is_authenticated  %}
+                    <button type="submit" onclick="myFunctionLike()"  id="like"  name="{{ def.id }}" value="likebutton" class="btn btn-social btn-outline-success likebutton">
+	                    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                        <i id="like_{{ def.id }}">
+                             {{ def.like_count }}
+                        </i>
+                    </button>
+                    <button type="submit"  id="dislike" name="{{ def.id }}" value="dislikebutton" class="btn btn-social btn-outline-danger dislikebutton">
+                        <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+                        <i id="dislike_{{ def.id }}">{{ def.dislike_count }}</i>
+                    </button>
+
+                    {% else %}
+
+                    <button  href="#logInPart"  data-toggle="modal" type="submit"  id="like2"  name="{{ def.id }}" value="likebutton" class="btn btn-social btn-outline-success">
+	                    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                        <i id="like2_{{ def.id }}">
+                             {{ def.like_count }}
+                        </i>
+                    </button>
+                    <button href="#logInPart"  data-toggle="modal" type="submit" id="dislike2" name="{{ def.id }}" value="dislikebutton" class="btn btn-social btn-outline-danger">
+                        <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+                        <i id="dislike2_{{ def.id }}">{{ def.dislike_count }}</i>
+                    </button>
+
+
+                    {% endif %}
+                
+                     </div>
+            </div>
+        	<div class="row mt-3">
+                    <div class="col-md-12">
+
+                        <span style="font-size:14px!important;" class="fa fa-share-alt mb-3">  শেয়ার করুনঃ</span>
+                        <div class="tags">
+                            <a class="social-link facebook  mr-3" href="https://www.facebook.com/sharer.php?u=https://bakademia.com/word_def/def_id={{def.id}}" id="fb-share"
+                               rel="nofollow" target="_blank" title="Share on Facebook" ><i class="fa fa-facebook"></i> ফেসবুক</a>
+                            <a class="social-link gplus" target="_blank" id="gplus-share" href="https://plus.google.com/share?url=https://bakademia.com/word_def/def_id={{ def.id }}" title="share it">
+                                <i class="fa fa-google-plus"></i>গুগল প্লাস</a>
+                        </div>
+                    </div>
+               </div>
+        	<div class="row mt-3">
+            	<div class="col-md-12">
+                	<p> <span class="mr-1" style="font-style:italic; font-weight:bold;">{{def.word.word_name}}</span> এর আরও ব্যাখ্যা জানতে <a href="{% url 'show_word' def.word.word_name %}"> এখানে ক্লিক করুন।</a></p> 
+            	</div>
+        	</div>
+        </div>
+    </div>
+
+
+
+<script>
+$('.likebutton').click(function(){
+    // Do something
+    //  
+    $('.likebutton').attr("disabled", "disabled");
+	$('.dislikebutton').attr("disabled", "disabled");
+	$.ajax({
+               type: "POST",
+               url: "{% url 'show_def' def.id %}",
+               data: {'slug': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}', 'variable':'likebutton'},
+
+               success: function(data) {
+
+                     var id = $(this).attr('id');
+                     var data1=data.split(',')
+                     $("#like_"+data1[2]).html(data1[0]);
+                     $("#dislike_"+ data1[2]).html(data1[1]);
+               		 $('.likebutton').removeAttr("disabled");
+               		 $('.dislikebutton').removeAttr("disabled");
+
+                     //alert("Data: " + data );
+                },
+                error: function(rs, e) {
+                       alert("দুইদিনের দুনিয়া। লাইক দিয়া কি হবে");
+                	   $('.likebutton').removeAttr("disabled");
+               		   $('.dislikebutton').removeAttr("disabled");
+
+                }
+
+          });
+
+    })
+
+</script>
+
+<script>
+    $('.dislikebutton').click(function(){
+    
+	  $('.likebutton').attr("disabled", "disabled");
+	  $('.dislikebutton').attr("disabled", "disabled");
+      $.ajax({
+               type: "POST",
+               url: "{% url 'show_def' def.id %}",
+               data: {'slug': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}',  'variable':'dislikebutton'},
+
+               success: function(data) {
+                     var data1=data.split(',')
+
+                     $("#like_"+data1[2]).html(data1[0]);
+                     $("#dislike_"+ data1[2]).html(data1[1]);
+					 $('.likebutton').removeAttr("disabled");
+               		 $('.dislikebutton').removeAttr("disabled");
+                     //alert("Data: " + data );
+                },
+                error: function(rs, e) {
+                       alert("দুইদিনের দুনিয়া। disলাইক দিয়া কি হবে");
+					   $('.likebutton').removeAttr("disabled");
+               		   $('.dislikebutton').removeAttr("disabled");
+                }
+          });
+
+    })
+</script>
+
+{% endblock %}
+
+
